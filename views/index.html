@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Telegram Group Invite Platform</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">TG GroupMaker</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how">How It Works</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-sm btn-primary text-white ms-2" href="#upload">Get Started</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="fw-bold">Telegram Group Invite Platform</h1>
+          <p class="text-muted mt-3">
+            Securely send Telegram group or channel invite links using CSV phone number lists.
+            Fully compliant with Telegram policies.
+          </p>
+          <a href="#upload" class="btn btn-primary btn-lg mt-3">Start Sending Invites</a>
+        </div>
+        <div class="col-md-6 text-center">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="hero-img" alt="Telegram">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-5">Key Features</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 text-center p-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="icon">
+            <h5 class="mt-3">CSV Upload</h5>
+            <p class="text-muted">Upload phone numbers easily using a CSV file.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 text-center p-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="icon">
+            <h5 class="mt-3">Telegram Safe</h5>
+            <p class="text-muted">Invite-link based sending. No force join.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 text-center p-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" class="icon">
+            <h5 class="mt-3">Secure & Reliable</h5>
+            <p class="text-muted">Runs locally. No data sharing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-5">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-4">How It Works</h2>
+      <div class="row text-center">
+        <div class="col-md-3">📁 Upload CSV</div>
+        <div class="col-md-3">🔗 Add Invite Link</div>
+        <div class="col-md-3">🚀 Messages Sent</div>
+        <div class="col-md-3">👥 Users Join</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPLOAD FORM -->
+  <section id="upload" class="py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow-lg border-0 rounded-4 p-4">
+            <h4 class="text-center mb-4 fw-bold">
+              📩 Send Telegram Invites
+            </h4>
+
+            <form id="inviteForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">📁 Upload CSV File</label>
+                <input type="file" class="form-control" name="csvfile" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">🔗 Telegram Invite Link</label>
+                <input type="text" class="form-control" name="link" placeholder="https://t.me/yourgroup" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">
+                  ✉️ Message Content
+                  <small class="text-muted">(use {{link}})</small>
+                </label>
+                <textarea class="form-control" name="message" rows="5" required>
+Hello 👋
+As discussed, please join our official Telegram group:
+{{link}}
+
+Thank you
+              </textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 py-2">
+                🚀 Send Invites
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white text-center py-3">
+    © 2026 TG GroupMaker | Secure Telegram Automation
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <div id="successToast" class="toast-box">
+    ✅ Invites sent successfully!
+  </div>
+
+  <script>
+    const form = document.getElementById("inviteForm");
+    const toast = document.getElementById("successToast");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const res = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      if (res.ok) {
+        toast.classList.add("show");
+        form.reset();
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 4000);
+      } else {
+        alert("Something went wrong!");
+      }
+    });
+  </script>
+</body>
+
+</html>

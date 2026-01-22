@@ -1,0 +1,36 @@
+.hero-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #0f2027, #203a43);
+    color: #fff;
+}
+
+.hero-img {
+    max-width: 260px;
+}
+
+.icon {
+    width: 60px;
+    margin: auto;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.toast-box {
+    position: fixed;
+    top: 20px;
+    right: -400px;
+    background: #198754;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: right 0.5s ease;
+    z-index: 9999;
+}
+
+.toast-box.show {
+    right: 20px;
+}
