@@ -1,5 +1,5 @@
 node_modules/
 uploads/
-telegram.session
+# telegram.session
 .env
 
