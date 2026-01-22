@@ -1,4 +1,21 @@
-///sequiert 
+const express = require("express");
+const multer = require("multer");
+const csv = require("csv-parser");
+const fs = require("fs");
+const path = require("path");
+
+const { TelegramClient } = require("telegram");
+const { StringSession } = require("telegram/sessions");
+const input = require("input");
+
+/* ===============================
+   APP INIT (MUST BE FIRST)
+================================ */
+const app = express();
+
+/* ===============================
+   BASIC AUTH (NOW SAFE)
+================================ */
 const BASIC_USER = "admin";
 const BASIC_PASS = "mypassword123";
 
@@ -22,34 +39,18 @@ app.use((req, res, next) => {
     res.status(401).send("Access denied");
   }
 });
-////admin password//
-
-
-const express = require("express");
-const multer = require("multer");
-const csv = require("csv-parser");
-const fs = require("fs");
-const path = require("path");
-
-const { TelegramClient } = require("telegram");
-const { StringSession } = require("telegram/sessions"); // ✅ MISSING IMPORT
-const input = require("input");
-
-const app = express();
 
 /* ===============================
    MIDDLEWARE
 ================================ */
-
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
 const upload = multer({ dest: "uploads/" });
 
 /* ===============================
-   TELEGRAM SESSION (FIXED)
+   TELEGRAM CONFIG
 ================================ */
-
 const apiId = 35725264;
 const apiHash = "d2e59ed2ba045dc46b4586a181ae8756";
 
@@ -64,7 +65,6 @@ const stringSession = new StringSession(
 /* ===============================
    ROUTES
 ================================ */
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
@@ -90,7 +90,6 @@ app.post("/upload", upload.single("csvfile"), async (req, res) => {
           { connectionRetries: 5 }
         );
 
-        // Login (only first time)
         await client.start({
           phoneNumber: async () => await input.text("Telegram number: "),
           phoneCode: async () => await input.text("OTP: "),
@@ -98,7 +97,7 @@ app.post("/upload", upload.single("csvfile"), async (req, res) => {
           onError: (err) => console.log(err),
         });
 
-        // ✅ Save session once
+        // Save session (one time)
         fs.writeFileSync(SESSION_FILE, client.session.save());
         console.log("✅ Telegram session saved");
 
@@ -112,13 +111,12 @@ app.post("/upload", upload.single("csvfile"), async (req, res) => {
 
             console.log("Sent:", phone);
             await sleep(5000);
-          } catch (err) {
+          } catch {
             console.log("Failed:", phone);
           }
         }
 
-       res.status(200).json({ success: true });
-
+        res.status(200).json({ success: true });
       });
 
   } catch (err) {
@@ -130,7 +128,6 @@ app.post("/upload", upload.single("csvfile"), async (req, res) => {
 /* ===============================
    HELPERS
 ================================ */
-
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -138,7 +135,6 @@ function sleep(ms) {
 /* ===============================
    SERVER
 ================================ */
-
 app.listen(3000, () => {
   console.log("🚀 Server running on http://localhost:3000");
 });
